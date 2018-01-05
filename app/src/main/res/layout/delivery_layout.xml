@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/topViewDeliver"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorOrange">
+
+            <ImageView
+                android:id="@+id/ivBackDeliver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen10dp"
+                android:layout_marginStart="@dimen/dimen10dp"
+                android:background="@drawable/back_arrow_selector" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/deliveryDetails"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="@dimen/textSize16sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/bottomDeliveryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <include
+                layout="@layout/adapter_layout"/>
+
+        </RelativeLayout>
+
+        <fragment
+            android:id="@+id/mapLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottomDeliveryLayout"
+            android:layout_below="@+id/topViewDeliver"
+            android:name="com.google.android.gms.maps.MapFragment" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

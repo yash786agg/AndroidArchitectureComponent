@@ -1,3 +1,10 @@
 <resources>
+
+    <string name="googleApikey">AIzaSyCbL4AlHLHXRgsmsB0E5ntdo7WwoHXSMv8</string>
+
     <string name="app_name">RoomLiveData</string>
+    <string name="thingsToDeliver">Things To Deliver</string>
+    <string name="at">at</string>
+    <string name="addressNotAvailable">Address Not Available</string>
+    <string name="deliveryDetails">Delivery Details</string>
 </resources>

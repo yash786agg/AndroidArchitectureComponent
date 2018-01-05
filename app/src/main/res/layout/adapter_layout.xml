@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    android:layout_margin="@dimen/margin5dp"
+    android:background="@drawable/rectangle">
+
+    <ImageView
+        android:id="@+id/deliveryImg"
+        android:layout_width="@dimen/dimen0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:background="@drawable/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/deliveryDescrp"
+        android:layout_width="@dimen/dimen0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:layout_margin="@dimen/margin10dp"
+        android:text="Deliver parcel to Leviero at Mong Kok"
+        android:textSize="@dimen/textSize19sp"
+        android:textColor="@android:color/black"/>
+
+</LinearLayout>

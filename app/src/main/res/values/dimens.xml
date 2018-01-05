@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="dimen0dp">0dp</dimen>
+    <dimen name="dimen2dp">2dp</dimen>
+    <dimen name="dimen5dp">5dp</dimen>
+    <dimen name="dimen10dp">10dp</dimen>
+    <dimen name="dimen28dp">28dp</dimen>
+    <dimen name="margin5dp">5dp</dimen>
+    <dimen name="margin10dp">10dp</dimen>
+    <dimen name="textSize16sp">16sp</dimen>
+    <dimen name="textSize19sp">19sp</dimen>
+</resources>

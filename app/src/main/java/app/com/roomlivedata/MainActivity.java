@@ -3,25 +3,38 @@ package app.com.roomlivedata;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import org.json.JSONArray;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import app.com.Adapter.RecyclerViewAdapter;
 import app.com.Extras.ApiRequestSingleton;
+import app.com.Extras.RecyclerView_ItemClickListener;
 import app.com.RoomDAO.DeliveryDataBase;
 import app.com.ViewModel.DeliveryDataViewModel;
 import app.com.model.DeliveryDataModel;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements RecyclerView_ItemClickListener
 {
     private DeliveryDataViewModel viewModel;
+    private RecyclerView deliveryRclv;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private ArrayList<DeliveryDataModel> deliveryArrayList;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -29,6 +42,17 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        deliveryRclv = findViewById(R.id.deliveryRclv);
+
+        deliveryArrayList = new ArrayList<>();
+
+        recyclerViewAdapter = new RecyclerViewAdapter(this,deliveryArrayList);
+        deliveryRclv.setLayoutManager(new LinearLayoutManager(this));
+
+        deliveryRclv.setAdapter(recyclerViewAdapter);
+
+        recyclerViewAdapter.setOnItemClickListener(this);
 
         viewModel = ViewModelProviders.of(this).get(DeliveryDataViewModel.class);
 
@@ -38,6 +62,10 @@ public class MainActivity extends AppCompatActivity
             public void onChanged(@Nullable List<DeliveryDataModel> deliveryData)
             {
                 Log.i(TAG, "onChanged: "+deliveryData);
+
+                deliveryArrayList = (ArrayList<DeliveryDataModel>) deliveryData;
+
+                recyclerViewAdapter.addItems(deliveryArrayList);
             }
         });
 
@@ -92,5 +120,23 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
 
         DeliveryDataBase.destroyDatabaseInstance();
+    }
+
+    @Override
+    public void onItemClick(View view, int position)
+    {
+        Intent deliveryintent = new Intent(MainActivity.this,DeliveryDetails.class);
+
+        if (deliveryArrayList.size() >=1)
+        {
+            /*
+            * Passing of ParcelableArrayList it will help as to take data to next screen
+            * It also reduce time and effect to call the Api Request to server for each product.
+            * */
+
+            deliveryintent.putParcelableArrayListExtra("deliveryArrayList",deliveryArrayList);
+            deliveryintent.putExtra("selectedPosition",position);
+        }
+        startActivity(deliveryintent);
     }
 }

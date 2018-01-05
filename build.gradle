@@ -25,13 +25,15 @@ allprojects {
 ext
 {
     //android
-    supportLibraryVersion = '26.1.0'
+    supportLibraryVersion = '27.0.2'
     roomVersion = "1.0.0"
     liveDataVersion = "1.0.3"
 
     //3rd Party
 
+    picassoVersion = "2.5.2"
     volleyVersion = "1.0.19"
+    googleMapVersion = "11.8.0"
 
 }
 
