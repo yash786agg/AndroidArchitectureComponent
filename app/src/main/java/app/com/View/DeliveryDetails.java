@@ -1,13 +1,16 @@
 package app.com.View;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,6 +38,8 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
     MainActivity main_activity;
 
     private MapFragment mapFragment;
+    private TextView deliveryDescrp;
+    private ImageView deliveryImg, ivBackDeliver;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -48,28 +53,44 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
 
         if (getArguments() != null)
         {
+            Log.i(TAG, "onCreate DeliveryDetails if");
             deliveryArrayList = getArguments().getParcelableArrayList("deliveryArrayList");
             selectedPosition = getArguments().getInt("selectedPosition", 0);
         }
-
-        Log.i(TAG, "onCreate DeliveryDetails: "+deliveryArrayList.size());
+        else
+        {
+            Log.i(TAG, "onCreate DeliveryDetails else");
+            deliveryArrayList = new ArrayList<>();
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.delivery_layout, container, false);
 
         mapFragment = (MapFragment) main_activity.getFragmentManager().findFragmentById(R.id.mapLayout);
 
-        Log.i(TAG, "onCreateView: "+deliveryArrayList.size());
+        Button landscape = v.findViewById(R.id.landscape);
+        landscape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        if(deliveryArrayList.get(selectedPosition).getLat() != 0.0 && deliveryArrayList.get(selectedPosition).getLng() != 0.0)
-        {
-            mapFragment.getMapAsync(this);
-        }
+                Log.i(TAG, "onClick: landscape");
+                main_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+        });
 
-        ImageView ivBackDeliver = v.findViewById(R.id.ivBackDeliver);
+        Button potrait = v.findViewById(R.id.potrait);
+        potrait.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "onClick: potrait");
+                main_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            }
+        });
+
+        ivBackDeliver = v.findViewById(R.id.ivBackDeliver);
         ivBackDeliver.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -79,9 +100,24 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
             }
         });
 
-        TextView deliveryDescrp = v.findViewById(R.id.deliveryDescrp);
+        deliveryDescrp = v.findViewById(R.id.deliveryDescrp);
 
-        ImageView deliveryImg = v.findViewById(R.id.deliveryImg);
+        deliveryImg = v.findViewById(R.id.deliveryImg);
+
+        if(deliveryArrayList.size() >= 1)
+        {
+            setData();
+        }
+
+        return v;
+    }
+
+    private void setData()
+    {
+        if(deliveryArrayList.get(selectedPosition).getLat() != 0.0 && deliveryArrayList.get(selectedPosition).getLng() != 0.0)
+        {
+            mapFragment.getMapAsync(this);
+        }
 
         if (!TextUtils.isEmpty(deliveryArrayList.get(selectedPosition).getDescription()) && !TextUtils.isEmpty(deliveryArrayList.get(selectedPosition).getAddress()))
         {
@@ -106,8 +142,6 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
                     .load("https://asia-public.foodpanda.com/dynamic/production/in/images/vendors/s5gg_sqp.jpg?v=20170908125114")
                     .into(deliveryImg);
         }
-
-        return v;
     }
 
     @Override
@@ -132,6 +166,10 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
     {
         deliveryArrayList = arrayList;
         selectedPosition = Index;
+
+        ivBackDeliver.setVisibility(View.GONE);
+
+        setData();
     }
 
     private void moveToPreviousScreen()

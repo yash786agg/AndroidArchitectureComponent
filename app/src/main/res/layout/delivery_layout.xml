@@ -21,7 +21,22 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dimen10dp"
                 android:layout_marginStart="@dimen/dimen10dp"
+                android:visibility="gone"
                 android:background="@drawable/back_arrow_selector" />
+
+            <Button
+                android:id="@+id/landscape"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="landscape"/>
+
+
+            <Button
+                android:id="@+id/potrait"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="potrait"/>
 
             <TextView
                 android:layout_width="wrap_content"

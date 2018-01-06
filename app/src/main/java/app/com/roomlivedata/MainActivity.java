@@ -1,30 +1,17 @@
 package app.com.roomlivedata;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-
 import java.util.ArrayList;
-import java.util.List;
-import app.com.Adapter.RecyclerViewAdapter;
 import app.com.Extras.RecyclerView_ItemClickListener;
 import app.com.View.DeliveryDetails;
 import app.com.View.DeliveryList;
-import app.com.ViewModel.DeliveryDataViewModel;
 import app.com.model.DeliveryDataModel;
 
 public class MainActivity extends AppCompatActivity implements RecyclerView_ItemClickListener
@@ -48,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerView_Item
         // FrameLayout and if so we must add the first fragment
         if (findViewById(R.id.fragment_container) != null)
         {
-
-            FrameLayout fragment_container = findViewById(R.id.fragment_container);
             // However if we are being restored from a previous state, then we don't
             // need to do anything and should return or we could end up with overlapping Fragments
             if (savedInstanceState != null)
