@@ -1,9 +1,15 @@
 package app.com.RoomDAO;
 
+import android.annotation.SuppressLint;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.util.Log;
 
 import app.com.model.DeliveryDataModel;
 
@@ -20,6 +26,33 @@ public abstract class DeliveryDataBase extends RoomDatabase
 
     public static DeliveryDataBase getDatabaseInstance(Context context)
     {
+        Log.i("Main", "getDatabaseInstance: ");
+
+        if (mInstance == null)
+        {
+            mInstance = Room.databaseBuilder(context.getApplicationContext(), DeliveryDataBase.class, "Delivery_Database").build();
+        }
+
+        return mInstance;
+    }
+
+    /*public static void destroyDatabaseInstance()
+    {
+        Log.i("Main", "destroyDatabaseInstance: ");
+
+        if(mInstance != null)
+        {
+            Log.i("Main", "destroyDatabaseInstance if");
+
+            mInstance.close();//closing database
+        }
+    }*/
+
+    /*@SuppressLint("StaticFieldLeak")
+    private static DeliveryDataBase mInstance;
+
+    public static DeliveryDataBase getDatabaseInstance(Context context)
+    {
         if (mInstance == null)
         {
             mInstance = Room.databaseBuilder(context.getApplicationContext(), DeliveryDataBase.class, "Delivery_Database").build();
@@ -31,5 +64,5 @@ public abstract class DeliveryDataBase extends RoomDatabase
     {
         mInstance.close();
         mInstance = null;
-    }
+    }*/
 }

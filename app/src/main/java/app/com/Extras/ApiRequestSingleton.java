@@ -23,7 +23,6 @@ public class ApiRequestSingleton
     {
         mCtc = context;
         mRequestQueue = getRequestQueue();
-
     }
 
     public static synchronized ApiRequestSingleton getInstance(Context context)
@@ -44,8 +43,8 @@ public class ApiRequestSingleton
         return mRequestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req) {
+    public <T> void addToRequestQueue(Request<T> req)
+    {
         getRequestQueue().add(req);
     }
-
 }

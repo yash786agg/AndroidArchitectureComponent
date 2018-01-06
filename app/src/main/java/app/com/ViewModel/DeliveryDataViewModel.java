@@ -5,7 +5,10 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -35,12 +38,14 @@ public class DeliveryDataViewModel extends AndroidViewModel
     {
         super(application);
 
+        Log.i("Main", "DeliveryDataViewModel instance: ");
+
         databaseInstance = DeliveryDataBase.getDatabaseInstance(this.getApplication());
 
         deliveryList = databaseInstance.deliveryDataDaoAccess().fetchAllData();
     }
 
-    public LiveData<List<DeliveryDataModel>> getDeliveryList()
+    public LiveData<List<DeliveryDataModel>> getDeliveryList(Context context)
     {
         Log.i("Main", "getDeliveryList: ");
         if (deliveryList == null)
@@ -49,7 +54,7 @@ public class DeliveryDataViewModel extends AndroidViewModel
             deliveryList = new MutableLiveData<>();
         }
 
-        getCropData();
+        getData();
 
         return deliveryList;
     }
@@ -62,6 +67,13 @@ public class DeliveryDataViewModel extends AndroidViewModel
         {
             super.onPreExecute();
 
+        }
+
+        private DeliveryDataBase db;
+
+        DeliveryDataAsync(DeliveryDataBase appDatabase)
+        {
+            db = appDatabase;
         }
 
         @Override
@@ -128,19 +140,17 @@ public class DeliveryDataViewModel extends AndroidViewModel
                             }
                         }
 
-                        Log.i("Main", "doInBackground: "+i);
-
-                        itemCount = databaseInstance.deliveryDataDaoAccess().getDeliveryById(i+1).getCount();
+                        itemCount = db.deliveryDataDaoAccess().getDeliveryById(i+1).getCount();
 
                         if(itemCount == 0)
                         {
-                            Log.i("Main", "doInBackground if");
-                            databaseInstance.deliveryDataDaoAccess().insertDeliveryList(deliveryDataModel);
+                            Log.i("Main", "doInBackground if ");
+                            db.deliveryDataDaoAccess().insertDeliveryList(deliveryDataModel);
                         }
                         else
                         {
-                            Log.i("Main", "doInBackground else");
-                            databaseInstance.deliveryDataDaoAccess().updateDeliveryList(deliveryDataModel);
+                            Log.i("Main", "doInBackground else ");
+                            db.deliveryDataDaoAccess().updateDeliveryList(deliveryDataModel);
                         }
                     }
                 }
@@ -162,7 +172,7 @@ public class DeliveryDataViewModel extends AndroidViewModel
         }
     }
 
-    private void getCropData()
+    private void getData()
     {
         JsonArrayRequest mJsonObjectRequest = new JsonArrayRequest(Request.Method.GET, ApiURL.deliveriesGetURL, new Response.Listener<JSONArray>()
         {
@@ -189,7 +199,7 @@ public class DeliveryDataViewModel extends AndroidViewModel
 
     private void setAllData(JSONArray response)
     {
-        new DeliveryDataAsync().execute(response);
+        new DeliveryDataAsync(databaseInstance).execute(response);
     }
 
 }

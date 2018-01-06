@@ -21,7 +21,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1.5"
         android:layout_margin="@dimen/margin10dp"
-        android:text="Deliver parcel to Leviero at Mong Kok"
         android:textSize="@dimen/textSize19sp"
         android:textColor="@android:color/black"/>
 

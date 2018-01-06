@@ -21,12 +21,12 @@ import app.com.roomlivedata.R;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>
 {
-    private ArrayList<DeliveryDataModel> deliverArrayList;
+    private ArrayList<DeliveryDataModel> deliveryArrayList;
     private LayoutInflater layoutInflater;
     private Context context;
     private RecyclerView_ItemClickListener clickListener;
 
-    public RecyclerViewAdapter(Context context, ArrayList<DeliveryDataModel> deliverArrayList)
+    public RecyclerViewAdapter(Context context, ArrayList<DeliveryDataModel> deliveryArrayList)
     {
         /*
          * RecyclerViewAdapter Constructor to Initialize Data which we get from MainActivity
@@ -34,7 +34,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
-        this.deliverArrayList = deliverArrayList;
+        this.deliveryArrayList = deliveryArrayList;
     }
 
     @Override
@@ -59,15 +59,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          * ArrayList Object.
          **/
 
-        if (!TextUtils.isEmpty(deliverArrayList.get(position).getDescription()) && !TextUtils.isEmpty(deliverArrayList.get(position).getAddress()))
+        if (!TextUtils.isEmpty(deliveryArrayList.get(position).getDescription()) && !TextUtils.isEmpty(deliveryArrayList.get(position).getAddress()))
         {
-            String deliveryAddress = deliverArrayList.get(position).getDescription()+" "+context.getResources().getString(R.string.at)+" "+deliverArrayList.get(position).getAddress();
+            String deliveryAddress = deliveryArrayList.get(position).getDescription()+" "+context.getResources().getString(R.string.at)+" "+deliveryArrayList.get(position).getAddress();
 
             holder.deliveryDescrp.setText(deliveryAddress);
         }
-        else if(!TextUtils.isEmpty(deliverArrayList.get(position).getDescription()))
+        else if(!TextUtils.isEmpty(deliveryArrayList.get(position).getDescription()))
         {
-            String deliveryAddress = deliverArrayList.get(position).getDescription();
+            String deliveryAddress = deliveryArrayList.get(position).getDescription();
 
             holder.deliveryDescrp.setText(deliveryAddress);
         }
@@ -76,7 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.deliveryDescrp.setText(context.getResources().getString(R.string.addressNotAvailable));
         }
 
-        if (!TextUtils.isEmpty(deliverArrayList.get(position).getImageUrl()))
+        if (!TextUtils.isEmpty(deliveryArrayList.get(position).getImageUrl()))
         {
             Picasso.with(context)
                     .load("https://asia-public.foodpanda.com/dynamic/production/in/images/vendors/s5gg_sqp.jpg?v=20170908125114")
@@ -91,7 +91,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          * getItemCount is used to get the size of respective worldpopulation_pojoArrayList ArrayList
          **/
 
-        return deliverArrayList.size();
+        return deliveryArrayList.size();
     }
 
     @Override
@@ -106,7 +106,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public void addItems(ArrayList<DeliveryDataModel> deliverArrayList)
     {
-        this.deliverArrayList = deliverArrayList;
+        this.deliveryArrayList = deliverArrayList;
         notifyDataSetChanged();
     }
 
