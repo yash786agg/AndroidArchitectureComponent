@@ -5,24 +5,37 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 import app.com.Adapter.RecyclerViewAdapter;
 import app.com.Extras.RecyclerView_ItemClickListener;
+import app.com.View.DeliveryDetails;
+import app.com.View.DeliveryList;
 import app.com.ViewModel.DeliveryDataViewModel;
 import app.com.model.DeliveryDataModel;
 
 public class MainActivity extends AppCompatActivity implements RecyclerView_ItemClickListener
 {
-    private RecyclerViewAdapter recyclerViewAdapter;
-    private ArrayList<DeliveryDataModel> deliveryArrayList;
+    static
+    {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
+   /* private RecyclerViewAdapter recyclerViewAdapter;
+    private ArrayList<DeliveryDataModel> deliveryArrayList;*/
     private static final String TAG = "MainActivity";
 
     @Override
@@ -31,7 +44,32 @@ public class MainActivity extends AppCompatActivity implements RecyclerView_Item
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView deliveryRclv = findViewById(R.id.deliveryRclv);
+        // Check whether the Activity is using the layout verison with the fragment_container
+        // FrameLayout and if so we must add the first fragment
+        if (findViewById(R.id.fragment_container) != null)
+        {
+
+            FrameLayout fragment_container = findViewById(R.id.fragment_container);
+            // However if we are being restored from a previous state, then we don't
+            // need to do anything and should return or we could end up with overlapping Fragments
+            if (savedInstanceState != null)
+            {
+                return;
+            }
+
+            // Create an Instance of Fragment
+
+            Fragment fragment = new DeliveryList();
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            fragmentTransaction.add(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+
+        /*RecyclerView deliveryRclv = findViewById(R.id.deliveryRclv);
 
         deliveryArrayList = new ArrayList<>();
 
@@ -41,16 +79,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerView_Item
         deliveryRclv.setAdapter(recyclerViewAdapter);
 
         recyclerViewAdapter.setOnItemClickListener(this);
-
-        /*LiveData<List<DeliveryDataModel>> deliveryLiveData = DeliveryDataBase.getDatabaseInstance(this).deliveryDataDaoAccess().fetchAllData();
-        deliveryLiveData.observe(this, new Observer<List<DeliveryDataModel>>()
-        {
-            @Override
-            public void onChanged(@Nullable List<DeliveryDataModel> universities)
-            {
-                Log.i(TAG, "onChanged: "+universities);
-            }
-        });*/
 
         Button landscape = findViewById(R.id.landscape);
         landscape.setOnClickListener(new View.OnClickListener() {
@@ -69,10 +97,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerView_Item
                 Log.i(TAG, "onClick: potrait");
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
-        });
+        });*/
     }
 
-    @Override
+   /* @Override
     protected void onResume()
     {
         super.onResume();
@@ -93,55 +121,62 @@ public class MainActivity extends AppCompatActivity implements RecyclerView_Item
                 recyclerViewAdapter.addItems(deliveryArrayList);
             }
         });
-    }
+    }*/
 
-    /*private void networkCheck()
+
+    @Override
+    public void onItemClick(View view, int position,ArrayList<DeliveryDataModel> deliveryArrayList)
     {
-        if(ConnectivityReceiver.isNetworkAvailable(this))
+        DeliveryDetails deliveryDetailsFragment = (DeliveryDetails) getSupportFragmentManager()
+                .findFragmentById(R.id.deliveryDetailsFragment);
+
+        Log.i(TAG, "onItemClick: ");
+
+        if (deliveryDetailsFragment != null)
         {
-            ConnectivityReceiver.speedTest(new ConnectivityReceiver.AsyncResponse()
-            {
-                @Override
-                public void processFinish(boolean output)
-                {
-                    if (output)
-                    {
+            Log.i(TAG, "onItemClick if: "+deliveryArrayList.size());
 
-                        *//* * If The output Value --->"True" Then Only login_request will Execute
-                         * NOTE: Here "True" Value Means Intenet is Working*//*
-
-                        getAppVersion();
-
-                        getBaneerImage();
-                    }
-                    else
-                    {
-                        Utility.SnackbarPopup(this, MainActivity.this.getResources().getString(R.string.Please_Check_Your_Internet_Connection),2,splash_coordinatorlayout);
-                    }
-                }
-            });
+            // If description is available, we are in two pane layout
+            // so we call the method in DescriptionFragment to update its content
+            deliveryDetailsFragment.setDescription(position,deliveryArrayList);
         }
         else
         {
-            Utility.SnackbarPopup(this, MainActivity.this.getResources().getString(R.string.Please_Connect_to_your_Wifi_or_Data_Connection),2,splash_coordinatorlayout);
+            Log.i(TAG, "onItemClick else: "+deliveryArrayList.size());
+
+            DeliveryDetails fragment = new DeliveryDetails();
+            Bundle args = new Bundle();
+
+            args.putParcelableArrayList("deliveryArrayList",deliveryArrayList);
+            args.putInt("selectedPosition",position);
+            fragment.setArguments(args);
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the backStack so the User can navigate back
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
-    }*/
+    }
 
     @Override
-    public void onItemClick(View view, int position)
+    public void onBackPressed()
     {
-        Intent deliveryintent = new Intent(MainActivity.this,DeliveryDetails.class);
 
-        if (deliveryArrayList.size() >=1)
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        Log.i(TAG, "onBackPressed: "+count);
+
+        if (count == 1)
         {
-            /*
-            * Passing of ParcelableArrayList it will help as to take data to next screen
-            * It also reduce time and effect to call the Api Request to server for each product.
-            * */
-
-            deliveryintent.putParcelableArrayListExtra("deliveryArrayList",deliveryArrayList);
-            deliveryintent.putExtra("selectedPosition",position);
+            super.onBackPressed();
+            finish();
         }
-        startActivity(deliveryintent);
+        else
+        {
+           getSupportFragmentManager().popBackStack();
+        }
+
     }
 }

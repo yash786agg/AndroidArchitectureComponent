@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:baselineAligned="false">
+
+    <fragment
+        android:id="@+id/deliveryListFragment"
+        android:layout_width="@dimen/dimen0dp"
+        android:layout_height="match_parent"
+        android:name="app.com.View.DeliveryList"
+        android:layout_weight="1"/>
+
+    <fragment
+        android:id="@+id/deliveryDetailsFragment"
+        android:layout_width="@dimen/dimen0dp"
+        android:layout_height="match_parent"
+        android:name="app.com.View.DeliveryDetails"
+        android:layout_weight="2" />
+
+</LinearLayout>

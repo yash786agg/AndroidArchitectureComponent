@@ -142,7 +142,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         {
             if (clickListener != null)
             {
-                clickListener.onItemClick(view,getAdapterPosition());
+                clickListener.onItemClick(view,getAdapterPosition(),deliveryArrayList);
             }
         }
     }
