@@ -1,53 +1,42 @@
-apply plugin: 'com.android.application'
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-android
-{
-    compileSdkVersion 27
-    defaultConfig
-   {
-        applicationId "app.com.roomlivedata"
-        minSdkVersion 14
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-        vectorDrawables.useSupportLibrary = true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+buildscript {
+    
+    repositories {
+        google()
+        jcenter()
     }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        
 
-    buildTypes
-    {
-        release
-        {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
-dependencies
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+ext
 {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:'+ rootProject.supportLibraryVersion
-    compile 'com.android.support:design:'+ rootProject.supportLibraryVersion
+    //android
+    supportLibraryVersion = '27.0.2'
+    roomVersion = "1.0.0"
+    liveDataVersion = "1.0.3"
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    //3rd Party
 
-    //Room Dependency Injection
-    compile 'android.arch.persistence.room:runtime:' + rootProject.roomVersion
-    annotationProcessor 'android.arch.persistence.room:compiler:' + rootProject.roomVersion
+    picassoVersion = "2.5.2"
+    volleyVersion = "1.0.19"
+    googleMapVersion = "11.8.0"
 
-    //API Request Dependency Injection
-    compile 'com.mcxiaoke.volley:library:'+rootProject.volleyVersion
+}
 
-    //Android lifecycle Dependency Injection
-    compile 'android.arch.lifecycle:runtime:'+rootProject.liveDataVersion
-    compile 'android.arch.lifecycle:extensions:'+rootProject.roomVersion
-
-    //Picasso Dependency Injection
-    compile 'com.squareup.picasso:picasso:'+rootProject.picassoVersion
-
-    compile 'com.google.android.gms:play-services-maps:'+rootProject.googleMapVersion
-
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
