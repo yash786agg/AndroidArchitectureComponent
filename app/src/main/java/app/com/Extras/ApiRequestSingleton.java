@@ -19,6 +19,8 @@ public class ApiRequestSingleton
     @SuppressLint("StaticFieldLeak")
     private static Context mCtc;
 
+    /** The ApiRequest instance */
+
     private ApiRequestSingleton(Context context)
     {
         mCtc = context;
@@ -33,6 +35,8 @@ public class ApiRequestSingleton
         }
         return mInstance;
     }
+
+    /** To put the multiple ApiRequest in a Queue */
 
     private RequestQueue getRequestQueue()
     {

@@ -1,7 +1,6 @@
 package app.com.View;
 
 import android.app.Activity;
-import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +9,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -53,11 +51,19 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
 
         if (getArguments() != null)
         {
+            /*
+             * Below "deliveryArrayList" will get data of all the arrayList.
+             * "selectedPosition" --> is a selected Item Position*/
+
             deliveryArrayList = getArguments().getParcelableArrayList(getResources().getString(R.string.deliveryArrayList));
             selectedPosition = getArguments().getInt(getResources().getString(R.string.selectedPosition), 0);
         }
         else
         {
+             /*
+              *  Intialization of ArrayList.
+              */
+
             deliveryArrayList = new ArrayList<>();
         }
     }
@@ -67,29 +73,17 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
     {
         View v = inflater.inflate(R.layout.delivery_layout, container, false);
 
+        /*
+         *  Intialization of MapFragment.
+         */
+
         mapFragment = (MapFragment) main_activity.getFragmentManager().findFragmentById(R.id.mapLayout);
-
-        Button landscape = v.findViewById(R.id.landscape);
-        landscape.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                main_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            }
-        });
-
-        Button potrait = v.findViewById(R.id.potrait);
-        potrait.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                main_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
-        });
 
         deliveryDescrp = v.findViewById(R.id.deliveryDescrp);
 
         deliveryImg = v.findViewById(R.id.deliveryImg);
 
+        // Checking the size of deliveryArrayList
         if(deliveryArrayList.size() >= 1)
         {
             setData();
@@ -151,10 +145,17 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map)
     {
+         /*
+         *  Intialization of Latitude and Longitude.
+         */
         LatLng latlng_object = new LatLng(deliveryArrayList.get(selectedPosition).getLat(),
                 deliveryArrayList.get(selectedPosition).getLng());
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng_object, 10));
+
+        /*
+         *  Adding of marker to show the location based on latlng_object with address..
+         */
 
         map.addMarker(new MarkerOptions()
                 .title(deliveryArrayList.get(selectedPosition).getDescription())
@@ -168,6 +169,9 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
 
     public void setDescription(int Index,ArrayList<DeliveryDataModel> arrayList)
     {
+        // setDescription is used to set data when application is supporting  multi pane layout
+        // At that both the fragment are visible to the user.
+
         deliveryArrayList = arrayList;
         selectedPosition = Index;
 
@@ -178,6 +182,9 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
     public void onDestroy()
     {
         super.onDestroy();
+
+        // Removing the map Fragment to avoid app crashes with exception: Caused by: java.lang.IllegalStateException
+        // that Map fragment is already in use.
 
         main_activity.getFragmentManager().beginTransaction().remove(mapFragment).commit();
     }

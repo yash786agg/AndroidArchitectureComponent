@@ -26,20 +26,6 @@
                 android:textStyle="bold"
                 android:textSize="@dimen/textSize16sp" />
 
-            <Button
-                android:id="@+id/landscape"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="landscape"/>
-
-
-            <Button
-                android:id="@+id/potrait"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="potrait"/>
-
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView

@@ -14,20 +14,6 @@
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/colorOrange">
 
-            <Button
-                android:id="@+id/landscape"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="landscape"/>
-
-
-            <Button
-                android:id="@+id/potrait"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="potrait"/>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

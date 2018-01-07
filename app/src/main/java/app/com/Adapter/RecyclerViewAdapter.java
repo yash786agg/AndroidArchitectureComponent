@@ -31,8 +31,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter(Context context, ArrayList<DeliveryDataModel> deliveryArrayList)
     {
         /*
-         * RecyclerViewAdapter Constructor to Initialize Data which we get from MainActivity
-         **/
+         * RecyclerViewAdapter Constructor to Initialize Data which we get from DeliveryList Fragment
+         */
 
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -44,9 +44,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     {
         /*
          * LayoutInflater is used to Inflate the view
-         * from fragment_listview_adapter
+         * from adapter_layout
          * for showing data in RecyclerView
-         **/
+         */
 
         View view = layoutInflater.inflate(R.layout.adapter_layout, parent, false);
         return new MyViewHolder(view);
@@ -57,9 +57,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     {
         /*
          * onBindViewHolder is used to Set all the respective data
-         * to Textview or Imagview form worldpopulation_pojoArrayList
+         * to Textview or Imagview form deliveryArrayList
          * ArrayList Object.
-         **/
+         */
 
         if (!TextUtils.isEmpty(deliveryArrayList.get(position).getDescription()) && !TextUtils.isEmpty(deliveryArrayList.get(position).getAddress()))
         {
@@ -108,8 +108,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount()
     {
         /*
-         * getItemCount is used to get the size of respective worldpopulation_pojoArrayList ArrayList
-         **/
+         * getItemCount is used to get the size of respective deliveryArrayList
+         */
 
         return deliveryArrayList.size();
     }
@@ -119,13 +119,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     {
         /*
          * Return the view type of the item at position for the purposes of view recycling.
-         **/
+         */
 
         return position;
     }
 
     public void addItems(ArrayList<DeliveryDataModel> deliverArrayList)
     {
+        /*
+         * addItems method is to add items in the deliverArrayList and notifiy the adapter for the data change.
+         */
+
         this.deliveryArrayList = deliverArrayList;
         notifyDataSetChanged();
     }
@@ -140,9 +144,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView deliveryDescrp;
         ImageView deliveryImg;
 
-        /**
+        /*
          * MyViewHolder is used to Initializing the view.
-         **/
+         */
 
         MyViewHolder(View itemView)
         {

@@ -3,7 +3,6 @@ package app.com.View;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,24 +88,6 @@ public class DeliveryList extends Fragment
         deliveryRclv.setAdapter(recyclerViewAdapter);
 
         recyclerViewAdapter.setOnItemClickListener(main_activity);
-
-        Button landscape = v.findViewById(R.id.landscape);
-        landscape.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                main_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            }
-        });
-
-        Button potrait = v.findViewById(R.id.potrait);
-        potrait.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                main_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
-        });
 
         return v;
     }
