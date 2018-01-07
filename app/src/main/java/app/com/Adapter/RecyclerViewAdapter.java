@@ -1,6 +1,7 @@
 package app.com.Adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import app.com.Extras.RecyclerView_ItemClickListener;
@@ -17,7 +20,6 @@ import app.com.roomlivedata.R;
 /*
  * Created by Yash on 5/1/18.
  */
-
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>
 {
@@ -79,8 +81,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         if (!TextUtils.isEmpty(deliveryArrayList.get(position).getImageUrl()))
         {
             Picasso.with(context)
-                    .load("https://asia-public.foodpanda.com/dynamic/production/in/images/vendors/s5gg_sqp.jpg?v=20170908125114")
-                    .into(holder.deliveryImg);
+                    .load(deliveryArrayList.get(position).getImageUrl())
+                    .into(holder.deliveryImg, new Callback()
+                    {
+                        @Override
+                        public void onSuccess()
+                        {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                            {
+                                holder.deliveryImg.setBackground(null);
+                            }
+                            else
+                            {
+                                holder.deliveryImg.setBackgroundDrawable(null);
+                            }
+                        }
+
+                        @Override
+                        public void onError()
+                        {}
+                    });
         }
     }
 

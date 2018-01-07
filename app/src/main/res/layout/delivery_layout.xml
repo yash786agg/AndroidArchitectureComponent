@@ -14,16 +14,6 @@
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/colorOrange">
 
-            <ImageView
-                android:id="@+id/ivBackDeliver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dimen10dp"
-                android:layout_marginStart="@dimen/dimen10dp"
-                android:visibility="gone"
-                android:background="@drawable/back_arrow_selector" />
-
             <Button
                 android:id="@+id/landscape"
                 android:layout_width="wrap_content"

@@ -49,6 +49,14 @@
             android:layout_below="@+id/topViewMain"
             android:background="@color/colorLightGrey"/>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/dimen40dp"
+            android:layout_height="@dimen/dimen40dp"
+            android:indeterminateTint="@color/colorOrange"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
+
     </RelativeLayout>
 
 

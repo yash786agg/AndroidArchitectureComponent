@@ -2,11 +2,11 @@ package app.com.View;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +19,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import app.com.model.DeliveryDataModel;
@@ -39,8 +40,7 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
 
     private MapFragment mapFragment;
     private TextView deliveryDescrp;
-    private ImageView deliveryImg, ivBackDeliver;
-    private static final String TAG = "MainActivity";
+    private ImageView deliveryImg;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -53,13 +53,11 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
 
         if (getArguments() != null)
         {
-            Log.i(TAG, "onCreate DeliveryDetails if");
-            deliveryArrayList = getArguments().getParcelableArrayList("deliveryArrayList");
-            selectedPosition = getArguments().getInt("selectedPosition", 0);
+            deliveryArrayList = getArguments().getParcelableArrayList(getResources().getString(R.string.deliveryArrayList));
+            selectedPosition = getArguments().getInt(getResources().getString(R.string.selectedPosition), 0);
         }
         else
         {
-            Log.i(TAG, "onCreate DeliveryDetails else");
             deliveryArrayList = new ArrayList<>();
         }
     }
@@ -76,7 +74,6 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
 
-                Log.i(TAG, "onClick: landscape");
                 main_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
         });
@@ -85,18 +82,7 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
         potrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick: potrait");
                 main_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
-        });
-
-        ivBackDeliver = v.findViewById(R.id.ivBackDeliver);
-        ivBackDeliver.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                moveToPreviousScreen();
             }
         });
 
@@ -139,8 +125,26 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
         if (!TextUtils.isEmpty(deliveryArrayList.get(selectedPosition).getImageUrl()))
         {
             Picasso.with(main_activity)
-                    .load("https://asia-public.foodpanda.com/dynamic/production/in/images/vendors/s5gg_sqp.jpg?v=20170908125114")
-                    .into(deliveryImg);
+                    .load(deliveryArrayList.get(selectedPosition).getImageUrl())
+                    .into(deliveryImg, new Callback()
+                    {
+                        @Override
+                        public void onSuccess()
+                        {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                            {
+                                deliveryImg.setBackground(null);
+                            }
+                            else
+                            {
+                                deliveryImg.setBackgroundDrawable(null);
+                            }
+                        }
+
+                        @Override
+                        public void onError()
+                        {}
+                    });
         }
     }
 
@@ -167,22 +171,13 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
         deliveryArrayList = arrayList;
         selectedPosition = Index;
 
-        ivBackDeliver.setVisibility(View.GONE);
-
         setData();
-    }
-
-    private void moveToPreviousScreen()
-    {
-        main_activity.getSupportFragmentManager().popBackStack();
     }
 
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-
-        Log.i(TAG, "onDestroy: ");
 
         main_activity.getFragmentManager().beginTransaction().remove(mapFragment).commit();
     }

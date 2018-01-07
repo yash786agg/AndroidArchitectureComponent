@@ -1,10 +1,15 @@
 <resources>
 
     <string name="googleApikey">AIzaSyCbL4AlHLHXRgsmsB0E5ntdo7WwoHXSMv8</string>
+    <string name="databaseTableName">Delivery_Database</string>
 
     <string name="app_name">RoomLiveData</string>
     <string name="thingsToDeliver">Things To Deliver</string>
     <string name="at">at</string>
     <string name="addressNotAvailable">Address Not Available</string>
     <string name="deliveryDetails">Delivery Details</string>
+    <string name="ConnectWifiDataConn">Please Connect to Your Wifi or Data Connection..</string>
+    <string name="failToConnect">Fail to connect server</string>
+    <string name="deliveryArrayList">deliveryArrayList</string>
+    <string name="selectedPosition">selectedPosition</string>
 </resources>

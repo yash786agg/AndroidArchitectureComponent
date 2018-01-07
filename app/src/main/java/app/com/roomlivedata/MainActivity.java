@@ -5,8 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDelegate;
-import android.util.Log;
 import android.view.View;
 import java.util.ArrayList;
 import app.com.Extras.RecyclerView_ItemClickListener;
@@ -16,14 +14,14 @@ import app.com.model.DeliveryDataModel;
 
 public class MainActivity extends AppCompatActivity implements RecyclerView_ItemClickListener
 {
-    static
-    {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
+    //Application supports the latest Android Architecture Component ie:
+    //Code Structure: MVVM (Model View View Controller) with Live Data and View Model are Used.
+    //For offline storage : Android Latest "Room" database is used.
+    //Application support both Potrait and Landsacpe mode in Mobile and Tablet Devices.
 
-   /* private RecyclerViewAdapter recyclerViewAdapter;
-    private ArrayList<DeliveryDataModel> deliveryArrayList;*/
-    private static final String TAG = "MainActivity";
+    // On MainActivity both the Fragment ie DeliveryDetails and DeliveryList are attached and visible according to device.
+    // In Mobile mode 1 fragment will be visible at one time but in case of Tablet mode both fragments will be visible.
+    // Application support "Support multi pane layout".
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,92 +46,31 @@ public class MainActivity extends AppCompatActivity implements RecyclerView_Item
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
             fragmentTransaction.add(R.id.fragment_container, fragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
-
-        /*RecyclerView deliveryRclv = findViewById(R.id.deliveryRclv);
-
-        deliveryArrayList = new ArrayList<>();
-
-        recyclerViewAdapter = new RecyclerViewAdapter(this,deliveryArrayList);
-        deliveryRclv.setLayoutManager(new LinearLayoutManager(this));
-
-        deliveryRclv.setAdapter(recyclerViewAdapter);
-
-        recyclerViewAdapter.setOnItemClickListener(this);
-
-        Button landscape = findViewById(R.id.landscape);
-        landscape.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.i(TAG, "onClick: landscape");
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            }
-        });
-
-        Button potrait = findViewById(R.id.potrait);
-        potrait.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "onClick: potrait");
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
-        });*/
     }
 
-   /* @Override
-    protected void onResume()
-    {
-        super.onResume();
-
-        Log.i(TAG, "onResume: ");
-
-        DeliveryDataViewModel viewModel = ViewModelProviders.of(this).get(DeliveryDataViewModel.class);
-
-        viewModel.getDeliveryList(this).observe(MainActivity.this, new Observer<List<DeliveryDataModel>>()
-        {
-            @Override
-            public void onChanged(@Nullable List<DeliveryDataModel> deliveryData)
-            {
-                Log.i(TAG, "onChanged: "+deliveryData);
-
-                deliveryArrayList = (ArrayList<DeliveryDataModel>) deliveryData;
-
-                recyclerViewAdapter.addItems(deliveryArrayList);
-            }
-        });
-    }*/
-
-
-    @Override
+    @Override //onItemClick is an Override method from RecyclerViewAdapter to provide the item click listener on recyclerview
     public void onItemClick(View view, int position,ArrayList<DeliveryDataModel> deliveryArrayList)
     {
         DeliveryDetails deliveryDetailsFragment = (DeliveryDetails) getSupportFragmentManager()
                 .findFragmentById(R.id.deliveryDetailsFragment);
 
-        Log.i(TAG, "onItemClick: ");
-
         if (deliveryDetailsFragment != null)
         {
-            Log.i(TAG, "onItemClick if: "+deliveryArrayList.size());
-
             // If description is available, we are in two pane layout
-            // so we call the method in DescriptionFragment to update its content
+            // so we call the method in DeliveryDetails Fragment to update its content
             deliveryDetailsFragment.setDescription(position,deliveryArrayList);
         }
         else
         {
-            Log.i(TAG, "onItemClick else: "+deliveryArrayList.size());
-
             DeliveryDetails fragment = new DeliveryDetails();
             Bundle args = new Bundle();
 
-            args.putParcelableArrayList("deliveryArrayList",deliveryArrayList);
-            args.putInt("selectedPosition",position);
+            args.putParcelableArrayList(getResources().getString(R.string.deliveryArrayList),deliveryArrayList);
+            args.putInt(getResources().getString(R.string.selectedPosition),position);
             fragment.setArguments(args);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -148,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerView_Item
     @Override
     public void onBackPressed()
     {
-
         int count = getSupportFragmentManager().getBackStackEntryCount();
 
-        Log.i(TAG, "onBackPressed: "+count);
+        // On click of onBackPressed the "Count" is playing a vital role if both the fragment is visible like in Tablet Mode
+        //then count value is 2 otherwise count value will be 1.
 
         if (count == 1)
         {
@@ -162,6 +99,5 @@ public class MainActivity extends AppCompatActivity implements RecyclerView_Item
         {
            getSupportFragmentManager().popBackStack();
         }
-
     }
 }

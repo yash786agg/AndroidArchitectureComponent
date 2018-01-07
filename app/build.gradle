@@ -48,9 +48,6 @@ dependencies
     //Picasso Dependency Injection
     compile 'com.squareup.picasso:picasso:'+rootProject.picassoVersion
 
-    //Vector-drawable Dependency Injection
-    compile 'com.android.support:support-vector-drawable:'+ rootProject.supportLibraryVersion
-
     compile 'com.google.android.gms:play-services-maps:'+rootProject.googleMapVersion
 
 }
