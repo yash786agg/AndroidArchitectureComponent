@@ -39,6 +39,7 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
     private MapFragment mapFragment;
     private TextView deliveryDescrp;
     private ImageView deliveryImg;
+    private GoogleMap googleMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -145,6 +146,8 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map)
     {
+        googleMap = map;
+
          /*
          *  Intialization of Latitude and Longitude.
          */
@@ -174,6 +177,11 @@ public class DeliveryDetails extends Fragment implements OnMapReadyCallback
 
         deliveryArrayList = arrayList;
         selectedPosition = Index;
+
+        if(googleMap != null)
+        {
+            googleMap.clear();
+        }
 
         setData();
     }
